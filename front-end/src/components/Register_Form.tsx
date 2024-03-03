@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
-import { Button, Box, Typography  , Card, CardContent, CardActions, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom';
+import { Button, Box, Typography  , Card, CardContent, CardActions, TextField, Select, MenuItem, InputLabel, FormControl, Snackbar } from '@mui/material';
 import '../styles/form.css'
+import MuiAlert from '@mui/material/Alert';
+
 
 
 export default function Registerform() {
@@ -12,6 +15,10 @@ export default function Registerform() {
   const [password, setPassword] = useState("")
   const [confirmpassword, setConfirmPassword] = useState("")
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [open , setOpen] = useState(false)
+  const [alert , setAlert] = useState(null)
+  // var alertdata = ""
+
 
   function validateUsername(username: string): string | null {
     if (username.length < 3) {
@@ -48,11 +55,18 @@ export default function Registerform() {
     return null;
   }
 
+  const navigate = useNavigate()
 
   const handleSumit= (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setFormSubmitted(true)
+
+    const data = {
+      "username" : username,
+      "address" : address,
+      "gender" : gender,
+      "password" : password,
+    }
 
     const usernameError = validateUsername(username);
     const addressError = validateAddress(address);
@@ -64,10 +78,26 @@ export default function Registerform() {
       console.error('Validation errors');
       return;
     }
+    else {
+      axios.post('http://localhost:8000/register', data)
+      .then((res) => {
+        if(res.data === 'username already taken'){
+          setAlert(res.data)
+        }
+        else{
+          setOpen(true)
+          setTimeout(() => navigate('/') , 2500);
+        }
+      }).catch((err) => console.log(err))
+    }
   }
 
+  const handleclose = () => {
+    setOpen(false)
+  };
+
   return (
-    <div className='div'>
+    <div className='regdiv'>
       <Box sx={{ width:'400px', height:'auto'}}>
         <Card variant="outlined" sx={{borderRadius:3,marginBottom:3,  boxShadow:'0.1px 0.1px 1px 1px'}}>
           <form onSubmit={handleSumit}>
@@ -75,8 +105,8 @@ export default function Registerform() {
               <Typography variant='h4' color="text.primary" sx={{fontWeight:'bold', padding:2, fontFamily:'monospace'}} gutterBottom>
                 Register
               </Typography>
-              <TextField id="standard-basic" label='Username' variant="standard" type='text' required aria-required value={username} onChange={(e) => setUsername(e.target.value)} error={formSubmitted && !!validateUsername(username)}
-                helperText={formSubmitted ? validateUsername(username): ''} sx={{marginTop:2, minWidth:'300px'}} />
+              <TextField id="standard-basic" label='Username' variant="standard" type='text' required aria-required value={username} onChange={(e) => setUsername(e.target.value)} error={(formSubmitted && !!validateUsername(username))|| (formSubmitted && alert) || false }
+                helperText={(formSubmitted ? validateUsername(username): '')||(formSubmitted ? alert: '')} sx={{marginTop:2, minWidth:'300px'}} />
               <TextField  id="standard-multiline-static" label='Address' multiline variant="standard" type='text' required aria-required value={address} onChange={(e) => setAddress(e.target.value)} error={formSubmitted && !!validateAddress(address)}
                 helperText={formSubmitted ? validateAddress(address): ''} sx={{marginTop:2, minWidth:'300px'}} />
               <FormControl variant="standard" sx={{ marginTop:2, minWidth: '300px', textAlign:'start' }}>
@@ -113,6 +143,11 @@ export default function Registerform() {
           </form>
         </Card>
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleclose} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}>
+        <MuiAlert onClose={handleclose}  severity="success" sx={{ width: '100%' }}>
+          Registration Successfull. Navigating to login page
+        </MuiAlert>
+      </Snackbar>
     </div>
   )
 }

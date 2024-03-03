@@ -1,18 +1,45 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
-import { Button, Box, Typography, Card, CardContent, CardActions, TextField } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Button, Box, Typography, Card, CardContent, CardActions, TextField, Snackbar } from '@mui/material';
 import '../styles/form.css'
+import MuiAlert from '@mui/material/Alert';
+
 
 
 export default function Loginform() {
 
-  const [username, setUsername] = useState<String>("")
-  const [password, setPassword] = useState<String>("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [open, setOpen] = useState(false)
+  const [alertdata, setAlertdata] = useState("")
+  const navigate = useNavigate()
 
   const handleSumit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
+    axios.post("http://localhost:8000/login", {'username':username,'password':password})
+    .then((res) => {
+      console.log(res.data);
+      if(res.data.token){
+        localStorage.setItem('token',res.data.token)
+        localStorage.setItem('username',res.data.username)
+        navigate('/home')
+      }
+      else if(res.data === "Incorrect Password"){
+        setAlertdata(res.data)
+        setOpen(true)
+      }
+      else{
+        setAlertdata(res.data)
+        setOpen(true)
+      }
+    }).catch((err) => console.log(err))
   }
+
+  const handleclose = () => {
+    setOpen(false)
+  };
 
   return (
       <div className='div'>
@@ -35,6 +62,11 @@ export default function Loginform() {
           </form>
         </Card>
       </Box>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleclose} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}} >
+        <MuiAlert onClose={handleclose} severity="error" sx={{ width: '100%', height:'50%' }}>
+          {alertdata}
+        </MuiAlert>
+      </Snackbar>
       </div>
   )
 }
