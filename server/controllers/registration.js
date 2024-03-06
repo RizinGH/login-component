@@ -45,3 +45,29 @@ module.exports.login = async(req, res) => {
         }
     })
 }
+
+module.exports.reset_password = async(req, res) => {
+    const {username, password, newpassword} = req.body
+    RegistrationModel.findOne({username:username})
+    .then((resp) => {
+        if(resp){
+            bcrypt.compare(password, resp.password, (err, response) => {
+                if (response) {
+                    bcrypt.hash(newpassword, 10)
+                        .then((hash) => {
+                            RegistrationModel.updateOne({ password: hash })
+                                .then((changed) => {
+                                    return res.json("Password Changed Successfully")
+                                }).catch((err) => console.log(err))
+                        }).catch((err) => console.log(err))
+                }
+                else {
+                    return res.json("Your current password is incorrect")
+                }
+            })
+        }
+        else{
+            return res.json("Something happened! Try again later")
+        }
+        }).catch((err) => console.log(err))
+}

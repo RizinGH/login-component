@@ -17,7 +17,6 @@ export default function Registerform() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [open , setOpen] = useState(false)
   const [alert , setAlert] = useState(null)
-  // var alertdata = ""
 
 
   function validateUsername(username: string): string | null {
@@ -28,7 +27,7 @@ export default function Registerform() {
   }
   
   function validateAddress(address: string): string | null {
-    if (!address) {
+    if (!address || address.trim() === '') {
       return 'Address is required';
     }
     return null;
@@ -136,7 +135,7 @@ export default function Registerform() {
             </CardContent>
             <CardActions sx={{display:'flex', flexDirection:'column', marginTop:3}}>
               <Button size='medium' type='submit' variant='contained' sx={{minWidth:'300px', bgcolor:'#10a37f', '&:hover':{bgcolor:'#0c8769'}}}>Register</Button>
-              <Link to={'/'} style={{padding:20, color:'#2e63b3'}} >
+              <Link to={'/'} style={{padding:20, color:'#2e63b3', fontSize:16}} >
                 Already have an account? Log in
               </Link> 
             </CardActions>

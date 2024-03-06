@@ -5,8 +5,6 @@ import { Button, Box, Typography, Card, CardContent, CardActions, TextField, Sna
 import '../styles/form.css'
 import MuiAlert from '@mui/material/Alert';
 
-
-
 export default function Loginform() {
 
   const [username, setUsername] = useState("")
@@ -14,6 +12,7 @@ export default function Loginform() {
   const [open, setOpen] = useState(false)
   const [alertdata, setAlertdata] = useState("")
   const navigate = useNavigate()
+
 
   const handleSumit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,7 +42,7 @@ export default function Loginform() {
 
   return (
       <div className='div'>
-      <Box sx={{ width:'400px', height:'auto'}}>
+        <Box sx={{maxWidth:'400px'}}>
         <Card variant="outlined" className='card' sx={{borderRadius:3,marginBottom:3, boxShadow:'0.1px 0.1px 1px 1px'}}>
           <form onSubmit={handleSumit}>
           <CardContent>
@@ -51,17 +50,19 @@ export default function Loginform() {
               Login
             </Typography>
             <TextField id="standard-basic" label='Username' type='text' variant="standard" required aria-required value={username} onChange={(e) => setUsername(e.target.value)} sx={{marginTop:4, minWidth:'300px'}} />
-            <TextField id="standard-basic" label='Password' type='password' variant="standard" required aria-required value={password} onChange={(e) => setPassword(e.target.value)}  sx={{marginTop:4, minWidth:'300px'}} />
+            <div style={{display:'flex'}}>
+            <TextField id="standard-basic" label='Password' type='text' variant="standard" required aria-required value={password} onChange={(e) => setPassword(e.target.value)}  sx={{marginTop:4, minWidth:'300px'}} />
+            </div>
           </CardContent>
           <CardActions sx={{display:'flex', flexDirection:'column', marginTop:3}}>
             <Button size='medium' type='submit' variant='contained' sx={{minWidth:'300px', bgcolor:'#10a37f', '&:hover':{bgcolor:'#0c8769'} }}>Login</Button>
-            <Link to={'/register'} style={{padding:20, color:'#2e63b3'}}>
+            <Link to={'/register'} style={{padding:20, color:'#2e63b3', fontSize:16}}>
                Don't have an account? Sign up
             </Link> 
           </CardActions>
           </form>
         </Card>
-      </Box>
+        </Box>  
       <Snackbar open={open} autoHideDuration={3000} onClose={handleclose} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}} >
         <MuiAlert onClose={handleclose} severity="error" sx={{ width: '100%', height:'50%' }}>
           {alertdata}
