@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Box, Typography  , Card, CardContent, CardActions, TextField, Select, MenuItem, InputLabel, FormControl, Snackbar } from '@mui/material';
-import '../styles/form.css'
+import '../styles/login_register.css'
 import MuiAlert from '@mui/material/Alert';
 
 

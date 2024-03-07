@@ -1,6 +1,5 @@
-const RegistrationModel = require('../models/registration')
+const RegistrationModel = require('../models/registration_model')
 const bcrypt = require('bcrypt')
-const { response } = require('express')
 const jwt = require('jsonwebtoken')
 
 module.exports.register = async(req, res) => {

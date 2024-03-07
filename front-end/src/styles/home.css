@@ -3,8 +3,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    letter-spacing: 2px;
     font-size: 25px;
-    font-family:monospace;
-    color: #001e2b; 
+    font-family:Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #1a1b1c; 
     margin-top: 50px;
 }
+
+@media (max-width: 600px) {
+    .Home {
+      width: 90%;
+    }
+   
+  }

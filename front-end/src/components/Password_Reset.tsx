@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import '../styles/password_reset.css'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { Button } from '@mui/material'
+import { Button, Snackbar } from '@mui/material'
+import MuiAlert from '@mui/material/Alert';
+
 
 function Password_Reset() {
 
@@ -10,6 +12,8 @@ function Password_Reset() {
     const [newpassword, setNewPassword] = useState("")
     const username = localStorage.getItem("username")
     const [formSubmitted, setFormSubmitted] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [alertdata, setAlertdata] = useState("")
 
     
     const [alert, setAlert] = useState("")
@@ -23,6 +27,10 @@ function Password_Reset() {
         }
         return null;
     }
+
+    const handleclose = () => {
+        setOpen(false)
+      };
 
     const navigate = useNavigate()
 
@@ -42,7 +50,9 @@ function Password_Reset() {
         .then((res) => {
             if(res.data === "Password Changed Successfully"){
                 console.log(res);
-                navigate('/')
+                setOpen(true)
+                setAlertdata("Password changed successfully! Please login again to continue")
+                setTimeout(() => navigate('/'), 2500);
             }
             else if(res.data === "Your current password is incorrect")
             {
@@ -79,11 +89,16 @@ function Password_Reset() {
                 </div>
             </div>
             <Link to={'/'}>
-                <Button variant='outlined' sx={{ color: 'white', bgcolor: '#10a37f', '&:hover': { bgcolor: '#0c8769', borderRadius: 5 }, position: 'fixed', top: 10, right: 10, transition: '.2s', fontSize: 14, fontFamily: 'monospace' }}>LogOut</Button>
+                <Button variant='outlined' sx={{ color: 'white', bgcolor: '#10a37f', '&:hover': { bgcolor: '#0c8769'}, position: 'fixed', top: 10, right: 10, fontSize: 14, fontFamily: 'monospace' }}>LogOut</Button>
             </Link>
             <Link to={'/home'}>
-                <Button variant='outlined' sx={{ color: 'white', bgcolor: '#10a37f', '&:hover': { bgcolor: '#0c8769', borderRadius: 5 }, position: 'fixed', top: 10, right: 110, transition: '.2s', fontSize: 14, fontFamily: 'monospace' }}>Home</Button>
+                <Button variant='outlined' sx={{ color: 'white', bgcolor: '#10a37f', '&:hover': { bgcolor: '#0c8769'}, position: 'fixed', top: 10, right: 110, fontSize: 14, fontFamily: 'monospace' }}>Home</Button>
             </Link>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleclose} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}} >
+                <MuiAlert onClose={handleclose} severity="success" sx={{ width: '100%', height:'50%' }}>
+                    {alertdata}
+                </MuiAlert>
+            </Snackbar>
         </div>
     )
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Box, Typography, Card, CardContent, CardActions, TextField, Snackbar } from '@mui/material';
-import '../styles/form.css'
+import '../styles/login_register.css'
 import MuiAlert from '@mui/material/Alert';
 
 export default function Loginform() {
@@ -42,7 +42,7 @@ export default function Loginform() {
 
   return (
       <div className='div'>
-        <Box sx={{maxWidth:'400px'}}>
+        <Box sx={{minWidth:'420px'}}>
         <Card variant="outlined" className='card' sx={{borderRadius:3,marginBottom:3, boxShadow:'0.1px 0.1px 1px 1px'}}>
           <form onSubmit={handleSumit}>
           <CardContent>
@@ -51,7 +51,7 @@ export default function Loginform() {
             </Typography>
             <TextField id="standard-basic" label='Username' type='text' variant="standard" required aria-required value={username} onChange={(e) => setUsername(e.target.value)} sx={{marginTop:4, minWidth:'300px'}} />
             <div style={{display:'flex'}}>
-            <TextField id="standard-basic" label='Password' type='text' variant="standard" required aria-required value={password} onChange={(e) => setPassword(e.target.value)}  sx={{marginTop:4, minWidth:'300px'}} />
+            <TextField id="standard-basic" label='Password' type='password' variant="standard" required aria-required value={password} onChange={(e) => setPassword(e.target.value)}  sx={{marginTop:4, minWidth:'300px'}} />
             </div>
           </CardContent>
           <CardActions sx={{display:'flex', flexDirection:'column', marginTop:3}}>
