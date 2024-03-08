@@ -22,7 +22,7 @@ function Home() {
         setData("Click here to complete your profile")
       }
     }).catch((err) => console.log(err))
-  },[null])
+  },[username])
 
   return (
     <div className='Home'>

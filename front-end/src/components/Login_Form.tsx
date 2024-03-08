@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Box, Typography, Card, CardContent, CardActions, TextField, Snackbar } from '@mui/material';
+import { Button, Box, Typography, Card, CardContent, CardActions, TextField } from '@mui/material';
 import '../styles/login_register.css'
-import MuiAlert from '@mui/material/Alert';
 
 export default function Loginform() {
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [open, setOpen] = useState(false)
   const [alertdata, setAlertdata] = useState("")
+  const [alert, setAlert] = useState("")
   const navigate = useNavigate()
 
 
@@ -27,18 +26,14 @@ export default function Loginform() {
       }
       else if(res.data === "Incorrect Password"){
         setAlertdata(res.data)
-        setOpen(true)
+        setAlert(res.data)
       }
       else{
         setAlertdata(res.data)
-        setOpen(true)
+        setAlert(res.data)
       }
     }).catch((err) => console.log(err))
   }
-
-  const handleclose = () => {
-    setOpen(false)
-  };
 
   return (
       <div className='div'>
@@ -49,10 +44,16 @@ export default function Loginform() {
             <Typography variant='h4' color="text.primary" sx={{fontWeight:'bold', padding:2, fontFamily:'monospace'}} gutterBottom>
               Login
             </Typography>
-            <TextField id="standard-basic" label='Username' type='text' variant="standard" required aria-required value={username} onChange={(e) => setUsername(e.target.value)} sx={{marginTop:4, minWidth:'300px'}} />
-            <div style={{display:'flex'}}>
-            <TextField id="standard-basic" label='Password' type='password' variant="standard" required aria-required value={password} onChange={(e) => setPassword(e.target.value)}  sx={{marginTop:4, minWidth:'300px'}} />
-            </div>
+            {alert === "User not found" ? (
+            <TextField id="standard-basic" label='Username' type='text' variant="standard" required aria-required value={username} onChange={(e) => setUsername(e.target.value)} error={true} helperText={alertdata} sx={{marginTop:4, minWidth:'300px'}} />
+            ):(
+              <TextField id="standard-basic" label='Username' type='text' variant="standard" required aria-required value={username} onChange={(e) => setUsername(e.target.value)} sx={{marginTop:4, minWidth:'300px'}} />
+            )}
+            {alert === "Incorrect Password" ? (
+            <TextField id="standard-basic" label='Password' type='password' variant="standard" required aria-required value={password} onChange={(e) => setPassword(e.target.value)} error={true} helperText={alertdata} sx={{marginTop:4,outline:'none', minWidth:'300px'}} />
+            ):(
+              <TextField id="standard-basic" label='Password' type='password' variant="standard" required aria-required value={password} onChange={(e) => setPassword(e.target.value)} sx={{marginTop:4, minWidth:'300px'}} />
+            )}
           </CardContent>
           <CardActions sx={{display:'flex', flexDirection:'column', marginTop:3}}>
             <Button size='medium' type='submit' variant='contained' sx={{minWidth:'300px', bgcolor:'#10a37f', '&:hover':{bgcolor:'#0c8769'} }}>Login</Button>
@@ -63,11 +64,6 @@ export default function Loginform() {
           </form>
         </Card>
         </Box>  
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleclose} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}} >
-        <MuiAlert onClose={handleclose} severity="error" sx={{ width: '100%', height:'50%' }}>
-          {alertdata}
-        </MuiAlert>
-      </Snackbar>
       </div>
   )
 }

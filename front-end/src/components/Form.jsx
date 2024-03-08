@@ -57,11 +57,11 @@ function Form() {
             console.log(response);
             if (response.data === "Successfully completed"){
                 alert("Successfully completed. Navigating to home")
-                setTimeout(() =>  navigate('/home'), 2500);
+                navigate('/home')
             }
             else{
                 alert("Error Validating reCAPTCHA")
-                setTimeout(() =>  window.location.reload(), 2500);
+                setTimeout(() =>  window.location.reload(), 1000);
             }
           } catch (error) {
             console.error('Error:', error);
