@@ -15,6 +15,8 @@ function Form() {
     const [gender, setGender] = useState("")
     const [address, setAddress] = useState("")
     const [color, setColor] = useState("")
+    const [validname, isValidName] = useState("")
+    const [validaddress, isValidAddress] = useState("")
 
     const navigate = useNavigate()
 
@@ -52,6 +54,17 @@ function Form() {
             alert('Please verify the reCAPTCHA!');
             return;
           }
+        if(name.trim()=== ''){
+            isValidAddress("")
+            isValidName("Please enter a valid name")
+            return
+        }
+        else if(address.trim() === ''){
+            isValidName("")
+            isValidAddress("Please enter a valid address")
+            return
+        }
+        
           try {
             const response = await axios.post('http://localhost:8000/profile', formData);
             console.log(response);
@@ -87,7 +100,8 @@ function Form() {
                         <div className='fields'>
                             <div className="field">
                                 <label>Name</label>
-                                <input type="text" required  value={name} onChange={(e) => setName(e.target.value)}/>
+                                <input type="text" id='name' required  value={name} onChange={(e) => setName(e.target.value)} />
+                                <span>{validname}</span>
                             </div>
                             <div className="field">
                                 <label>Email</label>
@@ -119,6 +133,7 @@ function Form() {
                             <div className="field" >
                                 <label>Address</label>
                                 <textarea name="address" id="address" required value={address} onChange={(e) => setAddress(e.target.value)}></textarea>
+                                <span>{validaddress}</span>
                             </div>
                             <div className="field">
                                 <label>Choose a color</label>

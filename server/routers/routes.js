@@ -1,7 +1,7 @@
 const Router = require("express");
 const router = Router()
 const multer = require('multer'); 
-const upload = multer({ dest: '../uploads/' });
+const upload = multer({ dest: './uploads/' });
 
 const { register, login, reset_password } = require("../controllers/registration_controller")
 const { profile, formcompleted } = require('../controllers/profile_controller')

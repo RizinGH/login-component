@@ -20,7 +20,7 @@ export default function Registerform() {
 
 
   function validateUsername(username: string): string | null {
-    if (username.length < 3) {
+    if (username.length < 3 || username.trim() === '') {
       return 'Username must be at least 3 characters long';
     }
     return null;
