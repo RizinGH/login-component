@@ -54,7 +54,7 @@ module.exports.reset_password = async(req, res) => {
                 if (response) {
                     bcrypt.hash(newpassword, 10)
                         .then((hash) => {
-                            RegistrationModel.updateOne({ password: hash })
+                            RegistrationModel.updateOne({ username: username },{ password: hash })
                                 .then((changed) => {
                                     return res.json("Password Changed Successfully")
                                 }).catch((err) => console.log(err))
