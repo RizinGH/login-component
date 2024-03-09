@@ -10,7 +10,7 @@ const ProfileSchema = new mongoose.Schema({
     gender : String,
     address : String,
     color : String,
-    file : Buffer
+    file : String
 })
 
 const ProfileModel = mongoose.model('profile',ProfileSchema)

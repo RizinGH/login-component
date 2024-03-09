@@ -17,6 +17,7 @@ function Form() {
     const [color, setColor] = useState("")
     const [validname, isValidName] = useState("")
     const [validaddress, isValidAddress] = useState("")
+    const [file, setFile] = useState("")
 
     const navigate = useNavigate()
 
@@ -38,7 +39,7 @@ function Form() {
         const username = localStorage.getItem("username")
 
         const formData = new FormData();
-        formData.append('file', e.target.elements.photo.files[0]);
+        formData.append('file', file);
         formData.append('captchaValue', captchaValue);
         formData.append('username', username);
         formData.append('name', name);
@@ -146,7 +147,7 @@ function Form() {
                                 </select>
                             </div>
                                 <label>Upload your photo</label>
-                                <input className='fileupload' type="file" id="photo" name="photo" accept="image/*" required/>
+                                <input className='fileupload' type="file" id="photo" name="photo" accept="image/*" onChange={(e) => setFile(e.target.files[0]) } required/>
                                 <ReCAPTCHA className="captcha" ref={recaptcha} sitekey={process.env.REACT_APP_SITE_KEY} fullWidth/>
                         </div>
                         <div className='buttons'>

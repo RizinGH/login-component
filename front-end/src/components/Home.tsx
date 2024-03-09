@@ -10,7 +10,8 @@ function Home() {
   const username  = localStorage.getItem('username')
   const [completed, setCompleted] = useState(false)
   const [data, setData] = useState("")
-
+  const [file, setFile] = useState("")
+ 
   useEffect(() => {
     axios.post("http://localhost:8000/home",{"username":username})
     .then((res) => {
@@ -24,6 +25,13 @@ function Home() {
     }).catch((err) => console.log(err))
   },[username])
 
+  useEffect(() => {
+    axios.post("http://localhost:8000/getimage", {"username":username})
+    .then((res) => {
+      setFile(res.data)
+    })
+  },[username])
+
   return (
     <div className='Home'>
       <h2>Login Successful</h2><br />
@@ -33,6 +41,7 @@ function Home() {
           <div className="card-content">
             <h3>Hi,{username}</h3>
             <p>{data}</p>
+            <img src={require(`../static/uploads/${file}`)} alt="user file"/>
           </div>
         </div>
       </Link>

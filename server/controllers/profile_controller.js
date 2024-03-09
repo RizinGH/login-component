@@ -16,7 +16,7 @@ module.exports.profile = async (req, res) => {
                     return res.json("User details already present")
                 }
                 else {
-                    const filedata = req.file ? req.file.path : '';
+                    const filedata = req.file.filename
                     ProfileModel.create({ username: username, name: name, email: email, password: password, dob: dob, age: age, gender: gender, address: address, color: color, file: filedata })
                         .then((response) => {
                             return res.json("Successfully completed")
@@ -32,13 +32,21 @@ module.exports.profile = async (req, res) => {
 
 module.exports.formcompleted = (req, res) => {
     const { username } = req.body
-    ProfileModel.findOne({username:username})
-    .then((data) => {
-        if(data){
-        return res.json("Profile Completed")
-    }
-    else{
-        return res.json("Profile Incomplete")
-    }
-    }).catch((err) => console.log(err))
+    ProfileModel.findOne({ username: username })
+        .then((data) => {
+            if (data) {
+                return res.json("Profile Completed")
+            }
+            else {
+                return res.json("Profile Incomplete")
+            }
+        }).catch((err) => console.log(err))
+}
+
+module.exports.getimage = (req, res) => {
+    const { username } = req.body
+    ProfileModel.findOne({username: username})
+    .then((response) =>{
+        return res.send(response.file)
+    }).catch(err => err)
 }
