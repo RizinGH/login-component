@@ -1,5 +1,5 @@
 # Login-Component
-A secure login system using the MEAN stack (MongoDB, Express.js, React with typescript, Node.js)
+A secure login system using the MERN stack (MongoDB, Express.js, React with typescript, Node.js)
 
 ---
 ### How to run
